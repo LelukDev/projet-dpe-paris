@@ -1,56 +1,61 @@
-# Projet DPE Paris
+# DPE Paris project
 
-Projet du cours **MSA-DATI07-03 · Advanced EDA & Data Collection**.
-Groupe : Elie Maarek, Joshai Bensoussan, Lucas Noury.
+Project for the course **MSA-DATI07-03 · Advanced EDA & Data Collection**.
+Group: Elie Maarek, Joshai Bensoussan, Lucas Noury.
 
-On collecte des diagnostics de performance énergétique (DPE) de logements parisiens via l'API de l'ADEME, on documente leur qualité, puis on les explore pour comprendre ce qui fait qu'un logement est classé A ou G.
+We collect energy performance diagnoses (DPE) of Paris dwellings from the ADEME API, document their quality, explore them to see what makes a dwelling labelled A or G, and compare three models that predict the label.
 
 ## Question
 
-Comment les étiquettes DPE (A à G) se répartissent à Paris, et comment varient-elles selon la période de construction, la surface et le chauffage ?
+How are DPE labels (A to G) distributed in Paris, and how do they vary with construction period, surface and heating? Which model predicts the label best?
 
-## Données
+## Data
 
-- Source : ADEME, jeu `dpe03existant` ([data.ademe.fr](https://data.ademe.fr/datasets/dpe03existant)), Licence Ouverte 2.0.
-- Collecte du 5 novembre 2026 par l'API, 10 000 DPE tirés au hasard (`sort=_rand`) parmi les 862 377 de Paris (`code_departement_ban:"75"`).
-- Le détail (date, filtres, colonnes) est dans `data/raw/README.md`.
-- Après nettoyage : 9 754 logements et 20 colonnes.
+- Source: ADEME, dataset `dpe03existant` ([data.ademe.fr](https://data.ademe.fr/datasets/dpe03existant)), Licence Ouverte 2.0.
+- Collected on 5 November 2026 through the API: 10,000 DPE drawn at random (`sort=_rand`) out of the 862,377 of Paris (`code_departement_ban:"75"`).
+- Details (date, filters, columns) are in `data/raw/README.md`.
+- After cleaning: 9,754 dwellings and 20 columns.
 
-## Contenu du dépôt
+## Repository content
 
 ```
-notebooks/01_collecte_qualite.ipynb   notebook principal (sections 1 à 6)
-data/raw/raw.parquet                  données brutes collectées (et leur README)
-data/processed/                       données nettoyées (générées par le notebook)
-reports/rapport_qualite.md            rapport qualité (2 pages)
-reports/decision_table.csv            tableau des décisions de nettoyage
-reports/schema_failures.csv           erreurs du schéma sur les données brutes
-reports/5_1.png, 5_2.png, 5_3.png     les trois figures
-docs/brief_projet.pdf                 énoncé du projet
-requirements.txt                      packages et versions
+notebooks/01_collecte_qualite.ipynb   collection, schema, data quality, exploration (sections 1 to 6)
+notebooks/02_models.ipynb             logistic regression by hand, decision tree, random forest
+data/raw/raw.parquet                  raw collected data (and its README)
+data/processed/clean.parquet          clean data (written by notebook 01)
+reports/data_quality_report.md        data quality report (2 pages)
+reports/decision_table.csv            cleaning decisions
+reports/schema_failures.csv           schema errors on the raw data
+reports/5_1.png, 5_2.png, 5_3.png     exploration figures
+reports/6_1_loss.png, 6_2_confusion_matrix.png, model_comparison.csv   model results
+docs/brief_projet.pdf                 project brief
+requirements.txt                      packages and versions
 ```
 
-## Lancer le projet
+## Run the project
 
 ```
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_collecte_qualite.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/02_models.ipynb
 ```
 
-Le notebook affiche à la fin le nombre de lignes et une empreinte (fingerprint) des données propres. Deux exécutions donnent la même empreinte (`78abd427b5da` avec nos données), grâce au cache de l'API. Sans le cache, l'API renvoie d'autres lignes et l'empreinte change : c'est normal.
+Notebook 01 prints the number of rows and a fingerprint of the clean data at the end. Two runs give the same fingerprint (`78abd427b5da` with our data) thanks to the API cache. Without the cache the API returns other rows and the fingerprint changes: this is expected. Notebook 02 reads `data/processed/clean.parquet`, so run notebook 01 first.
 
-## Résultats principaux
+## Main results
 
-- 18 % des logements sont classés F ou G, les classes A et B font à peine 1 %.
-- L'âge du bâtiment pèse le plus : 26 % de F ou G avant 1948, environ 1 % à partir de 1978.
-- À période égale, les petits logements sont plus souvent F ou G.
+- 18 % of dwellings are F or G, classes A and B are barely 1 %.
+- Building age matters most: 26 % F or G before 1948, about 1 % from 1978.
+- For the same period, small dwellings are more often F or G.
+- Models (test set split by building): on descriptors only, the three models reach 41 to 43 % accuracy (31 % for the most frequent class). With intermediate variables (heat loss, ubat, insulation), the random forest reaches 64.5 % accuracy and 97 % within one class. Our logistic regression coded by hand matches scikit-learn.
 
-## Limites
+## Limits
 
-- L'étiquette est calculée à partir de la consommation et des émissions de GES : ces colonnes ne doivent pas servir à la prédire.
-- Un tiers des DPE sont générés à partir du DPE de l'immeuble : il faut séparer train et test par immeuble.
-- L'échantillon (1,2 % de Paris, DPE faits à la vente ou à la location) n'est pas représentatif de tout le parc.
+- The label is computed from consumption and GHG emissions: these columns must not be used to predict it.
+- A third of the DPE are generated from the building DPE: train and test must be split by building.
+- The intermediate variables come from the same calculation as the consumption: the 64.5 % is not a prediction made before the diagnosis.
+- The sample (1.2 % of Paris, DPE made for sales or rentals) does not represent all dwellings.
 
-Le détail est dans `reports/rapport_qualite.md`.
+More details in `reports/data_quality_report.md`.
