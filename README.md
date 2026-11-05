@@ -37,25 +37,26 @@ requirements.txt                      packages and versions
 ```
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r requirements.txt jupyter
 jupyter nbconvert --to notebook --execute --inplace notebooks/01_collecte_qualite.ipynb
 jupyter nbconvert --to notebook --execute --inplace notebooks/02_models.ipynb
 ```
 
-Notebook 01 prints the number of rows and a fingerprint of the clean data at the end. Two runs give the same fingerprint (`78abd427b5da` with our data) thanks to the API cache. Without the cache the API returns other rows and the fingerprint changes: this is expected. Notebook 02 reads `data/processed/clean.parquet`, so run notebook 01 first.
+Notebook 01 prints the number of rows and a fingerprint of the clean data at the end. It reads the committed `data/raw/raw.parquet`, so every run gives the same fingerprint (`78abd427b5da`). With `RECOLLECT = True` it calls the API again and draws other random rows, so the fingerprint changes: this is expected. Notebook 02 reads `data/processed/clean.parquet`, so run notebook 01 first.
 
 ## Main results
 
-- 18 % of dwellings are F or G, classes A and B are barely 1 %.
+- 18 % of dwellings are F or G, classes A and B are only 1.3 %.
 - Building age matters most: 26 % F or G before 1948, about 1 % from 1978.
-- For the same period, small dwellings are more often F or G.
-- Models (test set split by building): on descriptors only, the three models reach 41 to 43 % accuracy (31 % for the most frequent class). With intermediate variables (heat loss, ubat, insulation), the random forest reaches 64.5 % accuracy and 97 % within one class. Our logistic regression coded by hand matches scikit-learn.
+- For the same period, small dwellings are more often F or G. Electric heating looks worse than gas, but mostly because electric dwellings are smaller.
+- Models (test set split by building): on descriptors only, the three models reach 41 to 43 % accuracy (31 % for the most frequent class). With intermediate variables (heat loss, ubat, insulation), the random forest reaches 64.9 % accuracy and 97 % within one class. Our logistic regression coded by hand gives the same accuracy as scikit-learn with the same L2 penalty.
 
 ## Limits
 
 - The label is computed from consumption and GHG emissions: these columns must not be used to predict it.
 - A third of the DPE are generated from the building DPE: train and test must be split by building.
-- The intermediate variables come from the same calculation as the consumption: the 64.5 % is not a prediction made before the diagnosis.
+- The intermediate variables come from the same calculation as the consumption: the 64.9 % is not a prediction made before the diagnosis.
+- For DPE generated from the building, the heat loss is the one of the whole building.
 - The sample (1.2 % of Paris, DPE made for sales or rentals) does not represent all dwellings.
 
 More details in `reports/data_quality_report.md`.
