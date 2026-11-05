@@ -19,7 +19,7 @@ How are DPE labels (A to G) distributed in Paris, and how do they vary with cons
 ## Repository content
 
 ```
-notebooks/01_collection_quality.ipynb   collection, schema, data quality, exploration (sections 1 to 6)
+notebooks/01_collection_quality.ipynb collection, schema, data quality, exploration (sections 1 to 6)
 notebooks/02_models.ipynb             logistic regression by hand, decision tree, random forest
 data/raw/raw.parquet                  raw collected data (and its README)
 data/processed/clean.parquet          clean data (written by notebook 01)
@@ -28,7 +28,6 @@ reports/decision_table.csv            cleaning decisions
 reports/schema_failures.csv           schema errors on the raw data
 reports/5_1.png, 5_2.png, 5_3.png     exploration figures
 reports/6_1_loss.png, 6_2_confusion_matrix.png, model_comparison.csv   model results
-docs/brief_projet.pdf                 project brief
 requirements.txt                      packages and versions
 ```
 
