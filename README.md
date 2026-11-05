@@ -19,7 +19,7 @@ How are DPE labels (A to G) distributed in Paris, and how do they vary with cons
 ## Repository content
 
 ```
-notebooks/01_collecte_qualite.ipynb   collection, schema, data quality, exploration (sections 1 to 6)
+notebooks/01_collection_quality.ipynb   collection, schema, data quality, exploration (sections 1 to 6)
 notebooks/02_models.ipynb             logistic regression by hand, decision tree, random forest
 data/raw/raw.parquet                  raw collected data (and its README)
 data/processed/clean.parquet          clean data (written by notebook 01)
@@ -38,7 +38,7 @@ requirements.txt                      packages and versions
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt jupyter
-jupyter nbconvert --to notebook --execute --inplace notebooks/01_collecte_qualite.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/01_collection_quality.ipynb
 jupyter nbconvert --to notebook --execute --inplace notebooks/02_models.ipynb
 ```
 

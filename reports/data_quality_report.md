@@ -1,6 +1,6 @@
 # Data-Quality Report — DPE of existing dwellings in Paris (ADEME `dpe03existant`)
 
-**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collecte_qualite.ipynb` · **Commit:** `e2d7470`
+**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collection_quality.ipynb` · **Commit:** `e2d7470`
 **Clean-data fingerprint:** `78abd427b5da`
 
 
@@ -75,6 +75,6 @@ Condensed from `reports/decision_table.csv` (notebook 4.4).
 ```bash
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt jupyter
-jupyter nbconvert --to notebook --execute --inplace notebooks/01_collecte_qualite.ipynb
+jupyter nbconvert --to notebook --execute --inplace notebooks/01_collection_quality.ipynb
 ```
 Expected fingerprint: `78abd427b5da` (the notebook reads `data/raw/raw.parquet`; `RECOLLECT = True` draws a new sample).
