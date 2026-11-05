@@ -49,7 +49,7 @@ Condensed from `reports/decision_table.csv` (notebook 4.4).
 | `annee_construction` | 50 % missing, MAR | 4,899 | column dropped | more than 30 % empty |
 | `type_installation_chauffage`, `deperditions_enveloppe` | 0.5 % and 0.2 % missing, MAR | 76 | kept, impute later | tiny, train stats |
 | `zone_climatique` | 99.7 % identical (H1a) | 48 | column dropped | almost constant |
-| `conso_5_usages_par_m2_ep` | extreme values (IQR, log scale) | 158 | kept + `conso_outlier` | 80 very high (all G), 78 very low (almost all A to C): consistent |
+| `conso_5_usages_par_m2_ep` | extreme values (IQR, log scale) | 158 | kept + `conso_outlier` | 80 very high (all G, median 17 m²), 78 very low (A to C): real values |
 
 ## 5. Key findings (max 3)
 1. **18 % of dwellings are F or G, A and B only 1.3 %** — Fig. 5.1 — so what: very unbalanced, group A-B and F-G and use macro F1.
@@ -62,7 +62,7 @@ Condensed from `reports/decision_table.csv` (notebook 4.4).
 - **Small groups.** Fuel oil (89), LPG (15), wood (2), coal (1), period "après 2021" (24), class A (12): too few rows.
 - **Intermediate variables** (heat loss, ubat, insulation) come from the same calculation as the consumption. In notebook 02 they lift the random forest from 43 % to 64.5 % accuracy, but this is not a prediction made before the diagnosis.
 - **Unrepresentative sample.** 1.2 % of Paris, one date, and a DPE only exists for a sale, a rental or a new building.
-- **Skewed values**: heat loss up to 92,000 and consumption up to 1,334 kWh/m²/year, use a log scale or tree models.
+- **Skewed values**: heat loss up to 92,000, consumption up to 1,334 kWh/m²/year: log scale or trees.
 
 ## 7. Hypotheses for modelling (≥ 5)
 - **H1** — `periode_construction`: before 1948 gives more F or G than from 1978. Population: all 9,754 dwellings. Test: chi-square.
