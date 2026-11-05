@@ -1,1 +1,15 @@
 column,issue,n_rows,decision,why
+(toutes les colonnes),"223 colonnes, beaucoup presque vides ou hors sujet",10000,on garde 20 colonnes (KEEP),cible + descripteurs + variables intermédiaires utiles à la question ; les colonnes qui calculent l'étiquette sont gardées pour contrôle mais pas pour le modèle
+type_batiment,"DPE d'immeuble collectif, ce n'est pas un logement",167,lignes supprimées,"on étudie des logements, et la surface du logement est vide pour ces lignes"
+methode_application_dpe,DPE d'appartement généré à partir du DPE de l'immeuble,3219,gardés + colonne dpe_immeuble_genere,"le résultat vient de l'immeuble : des logements voisins se ressemblent, donc train/test à séparer par immeuble"
+toutes,lignes identiques,0,rien à faire,contrôle fait sur les colonnes gardées
+numero_dpe_remplace,ancien DPE encore présent à côté de son remplaçant,0,rien à faire,on garde le diagnostic le plus récent
+identifiant_ban,logements quasi identiques dans le même immeuble,429,gardés,souvent de vrais logements différents ; on évite surtout de les séparer entre train et test
+surface_habitable_logement,surface vide ou hors de 9-500 m²,79,lignes supprimées,"valeurs impossibles pour un logement, et la surface sert à presque tout"
+etiquette_dpe,étiquette différente de celle recalculée avec conso et GES,1398,lignes gardées,"écart surtout sous 40 m² (30% contre 2%) et dans le sens favorable : sûrement la règle des petites surfaces ; ces colonnes calculent l'étiquette, donc pas dans le modèle"
+numero_dpe_remplace,vide quand le DPE ne remplace rien,8641,gardé tel quel,"manque normal (structurel), pas une erreur"
+annee_construction,"50% de valeurs vides, MAR (dépend du type de DPE)",4899,colonne supprimée,plus de 30% vide
+type_installation_chauffage,"0.5% de valeurs vides, MAR (dépend du type de DPE)",53,"gardée, à remplir plus tard","on remplira dans le pipeline du modèle, avec les stats du train seulement"
+deperditions_enveloppe,"0.2% de valeurs vides, MAR (dépend du type de DPE)",23,"gardée, à remplir plus tard","on remplira dans le pipeline du modèle, avec les stats du train seulement"
+zone_climatique,99.7% des lignes ont la même valeur,48,colonne supprimée,"quasi constante, inutile pour expliquer l'étiquette"
+conso_5_usages_par_m2_ep,valeurs extrêmes (IQR sur log),158,gardées + colonne conso_outlier,"80 très hautes (étiquette G) et 78 très basses (A à C, le GES peut dégrader l'étiquette) : cohérent, on ne supprime pas"
