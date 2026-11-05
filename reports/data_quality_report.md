@@ -1,6 +1,6 @@
 # Data-Quality Report — DPE of existing dwellings in Paris (ADEME `dpe03existant`)
 
-**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collection_quality.ipynb` · **Commit:** `e2d7470`
+**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collection_quality.ipynb` · **Commit:** `35f301a`
 **Clean-data fingerprint:** `78abd427b5da`
 
 
@@ -19,7 +19,7 @@ Strict pandera schema on 20 columns (notebook 3.4), `lazy=True`. Key checks:
 - `numero_dpe` unique — duplicated DPE; `date_etablissement_dpe` from 2021-07-01 — old method; `type_batiment` in appartement, maison, immeuble — out-of-scope types
 - `etiquette_dpe`, `etiquette_ges` in A to G; consumption > 0, GHG ≥ 0 — typos, impossible values
 - `surface_habitable_logement` 5 to 1,000 m² raw, required and 9 to 500 m² clean; `annee_construction` 1500 to 2026; heat loss and ubat ≥ 0 — absurd or negative values
-- `strict=True`, `coerce=True` — extra columns, wrong types; `nullable` only on the 5 columns that have empty values in the raw data
+- `strict=True`, `coerce=True` — extra columns, wrong types; `nullable` only on the 7 columns that have empty values in the raw data
 
 Validation on raw data: **3 violations**, all on one check: surface outside 5 to 1,000 m² (3 m², 2,464 m², 3,450 m²), see `reports/schema_failures.csv`. Validation on clean data: **passes**.
 
@@ -34,7 +34,7 @@ Validation on raw data: **3 violations**, all on one check: surface outside 5 to
 Test (4.3): share of empty values per `methode_application_dpe` group (≥ 50 rows); gap > 10 points = MAR, always empty for one type = structural.
 
 ## 4. Duplicates & outliers — decision table
-Condensed from `reports/decision_table.csv` (notebook 4.4).
+Condensed from `reports/decision_table.csv` (notebook section 4).
 
 | Column | Issue | n rows | Decision | Why |
 |---|---|---|---|---|
@@ -58,11 +58,11 @@ Condensed from `reports/decision_table.csv` (notebook 4.4).
 
 ## 6. What cannot be trusted ⚠️
 - **Target leakage.** `conso_5_usages_par_m2_ep`, `emission_ges_5_usages_par_m2`, `etiquette_ges` (and `conso_outlier`) compute the label (worse of the energy and GHG classes): never use them as features. Under 40 m², 30 % of labels do not match the calculation (76 % under 15 m²): small dwellings have adjusted thresholds we do not have.
-- **DPE generated from the building DPE** (33 % of rows). Neighbours look alike and they are rarely F or G (6 % vs 24 %). Split train/test by `identifiant_ban`.
-- **Small groups**: fuel oil (89), LPG (15), wood (2), coal (1), "après 2021" (24), class A (9).
-- **Intermediate variables** (heat loss, ubat, insulation) come from the same calculation as the consumption. In notebook 02 they lift the random forest from 43 % to 64.9 % accuracy, but this is not a prediction made before the diagnosis.
-- **Sample**: 1.2 % of Paris, one date, DPE only exist for a sale, a rental or a new building.
 - **Heat loss of generated DPE.** For the 3,216 generated DPE, `deperditions_enveloppe` is the heat loss of the whole building (median 155 vs 2.8 W/K per m², 4.2). It is the forest's first variable: prefer `ubat_w_par_m2_k` (per m²).
+- **DPE generated from the building DPE** (33 % of rows). Neighbours look alike and they are rarely F or G (6 % vs 24 %). Split train/test by `identifiant_ban`.
+- **Intermediate variables** (heat loss, ubat, insulation) come from the same calculation as the consumption. In notebook 02 they lift the random forest from 43 % to 64.9 % accuracy, but this is not a prediction made before the diagnosis.
+- **Small groups**: fuel oil (89), LPG (15), wood (2), coal (1), "après 2021" (24), class A (9).
+- **Sample**: 1.2 % of Paris, one date, DPE only exist for a sale, a rental or a new building.
 
 ## 7. Hypotheses for modelling (≥ 5)
 - **H1** — `periode_construction`: before 1948 gives more F or G than from 1978. Population: all 9,754 dwellings. Test: chi-square.
