@@ -1,6 +1,6 @@
 # Data-Quality Report — DPE of existing dwellings in Paris (ADEME `dpe03existant`)
 
-**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collecte_qualite.ipynb` · **Commit:** `8f682d5`
+**Group:** Elie Maarek, Joshai Bensoussan, Lucas Noury · **Date:** 2026-11-05 · **Notebook:** `notebooks/01_collecte_qualite.ipynb` · **Commit:** `50ffb1c`
 **Clean-data fingerprint:** `78abd427b5da`
 
 
