@@ -1,0 +1,8 @@
+variables,model,accuracy,macro F1,within one class
+none,always the most frequent class,0.308,0.094,0.799
+descriptors,logistic regression (by hand),0.415,0.349,0.843
+descriptors + intermediate,logistic regression (by hand),0.536,0.474,0.954
+descriptors,decision tree,0.407,0.349,0.811
+descriptors,random forest,0.432,0.365,0.827
+descriptors + intermediate,decision tree,0.574,0.511,0.949
+descriptors + intermediate,random forest,0.649,0.56,0.969
