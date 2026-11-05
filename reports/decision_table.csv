@@ -6,10 +6,11 @@ methode_application_dpe,apartment DPE generated from the building DPE,3219,kept 
 numero_dpe_remplace,old DPE still present next to its replacement,0,nothing to do,we keep the most recent diagnosis
 identifiant_ban,near-identical dwellings in the same building,429,kept,often really different dwellings; mainly we avoid splitting them between train and test
 surface_habitable_logement,surface empty or outside 9-500 m²,79,rows removed,"impossible for a dwelling, and the surface is used almost everywhere"
-etiquette_dpe,label different from the one recomputed with consumption and GHG,1398,rows kept,"gap mostly under 40 m² (30% vs 2%) and in the favourable direction: probably the small-surface rule; these columns compute the label, so not in the model"
+etiquette_dpe,label different from the one recomputed with consumption and GHG,1398,rows kept,"gap mostly under 40 m² (30% vs 2%), it falls as the surface grows and the label is better in 91% of cases: adjusted thresholds for small dwellings, not typos; these columns compute the label, so not in the model"
+deperditions_enveloppe,building-scale value for DPE generated from the building,3216,"kept, not comparable between the two groups",median 155 vs 2.8 W/K per m²: for generated DPE it is the heat loss of the whole building
 numero_dpe_remplace,empty when the DPE replaces nothing,8641,kept as is,"structural missing, not an error"
 annee_construction,"50% missing, MAR (depends on the DPE type)",4899,column dropped,more than 30% empty
-type_installation_chauffage,"0.5% missing, MAR (depends on the DPE type)",53,"kept, to impute later","imputed in the model pipeline, with train statistics only"
+type_installation_chauffage,"0.5% missing, structural (always empty for 'dpe maison individuelle')",53,"kept, category 'unknown' in the model","the value does not exist for this DPE type, so we do not guess it"
 deperditions_enveloppe,"0.2% missing, MAR (depends on the DPE type)",23,"kept, to impute later","imputed in the model pipeline, with train statistics only"
 zone_climatique,99.7% of rows have the same value,48,column dropped,"almost constant, useless to explain the label"
 conso_5_usages_par_m2_ep,extreme values (IQR on log scale),158,kept + column conso_outlier,"80 very high (label G, small dwellings: real extremes) and 78 very low (almost all A to C, the GHG class decides the label): consistent, not errors, so not deleted"
