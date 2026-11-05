@@ -12,4 +12,4 @@ annee_construction,"50% missing, MAR (depends on the DPE type)",4899,column drop
 type_installation_chauffage,"0.5% missing, MAR (depends on the DPE type)",53,"kept, to impute later","imputed in the model pipeline, with train statistics only"
 deperditions_enveloppe,"0.2% missing, MAR (depends on the DPE type)",23,"kept, to impute later","imputed in the model pipeline, with train statistics only"
 zone_climatique,99.7% of rows have the same value,48,column dropped,"almost constant, useless to explain the label"
-conso_5_usages_par_m2_ep,extreme values (IQR on log scale),158,kept + column conso_outlier,"80 very high (label G) and 78 very low (almost all A to C, GHG can worsen the label): consistent, not deleted"
+conso_5_usages_par_m2_ep,extreme values (IQR on log scale),158,kept + column conso_outlier,"80 very high (label G, small dwellings: real extremes) and 78 very low (almost all A to C, the GHG class decides the label): consistent, not errors, so not deleted"
